@@ -7,7 +7,10 @@
 
 <ul>
     @forelse ($dramas as $drama)
-        <li>{{ $drama->titulo }} ({{ $drama->anio }}) - {{ $drama->estado }}</li>
+        <li>
+            {{ $drama->titulo }} ({{ $drama->anio }}) - {{ $drama->estado }}
+            <a href="{{ route('dramas.edit', $drama) }}">Editar</a>
+        </li>
     @empty
         <li>Todavía no hay dramas.</li>
     @endforelse
