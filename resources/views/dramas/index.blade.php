@@ -8,8 +8,16 @@
 <ul>
     @forelse ($dramas as $drama)
         <li>
-            {{ $drama->titulo }} ({{ $drama->anio }}) - {{ $drama->estado }}
+            <a href="{{ route('dramas.show', $drama) }}">{{ $drama->titulo }}</a>
+            ({{ $drama->anio }}) - {{ $drama->estado }}
             <a href="{{ route('dramas.edit', $drama) }}">Editar</a>
+
+            <form action="{{ route('dramas.destroy', $drama) }}" method="POST" style="display: inline"
+                  onsubmit="return confirm('¿Eliminar este drama?')">
+                @csrf
+                @method('DELETE')
+                <button type="submit">Eliminar</button>
+            </form>
         </li>
     @empty
         <li>Todavía no hay dramas.</li>

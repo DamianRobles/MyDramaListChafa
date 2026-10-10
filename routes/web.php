@@ -16,4 +16,5 @@ Route::get('/dramas/create', [DramaController::class, 'create'])->name('dramas.c
 Route::post('/dramas', [DramaController::class, 'store'])->name('dramas.store');
 Route::get('/dramas/{drama}/edit', [DramaController::class, 'edit'])->name('dramas.edit');
 Route::put('/dramas/{drama}', [DramaController::class, 'update'])->name('dramas.update');
-
+Route::get('/dramas/{drama}', [DramaController::class, 'show'])->name('dramas.show');
+Route::delete('/dramas/{drama}', [DramaController::class, 'destroy'])->name('dramas.destroy');

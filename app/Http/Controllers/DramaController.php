@@ -57,4 +57,18 @@ class DramaController extends Controller
             ->route('dramas.index')
             ->with('exito', 'Drama actualizado correctamente.');
     }
+
+    public function show(Drama $drama)
+    {
+        return view('dramas.show', ['drama' => $drama]);
+    }
+
+    public function destroy(Drama $drama)
+    {
+        $drama->delete();
+
+        return redirect()
+            ->route('dramas.index')
+            ->with('exito', 'Drama eliminado correctamente.');
+    }
 }
