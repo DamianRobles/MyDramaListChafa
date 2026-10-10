@@ -1,9 +1,24 @@
-<h1>{{ $drama->titulo }}</h1>
+@extends('layouts.app')
 
-<p><strong>Año:</strong> {{ $drama->anio }}</p>
-<p><strong>Estado:</strong> {{ $drama->estado }}</p>
-<p><strong>Calificación:</strong> {{ $drama->calificacion ?? 'Sin calificar' }}</p>
-<p><strong>Sinopsis:</strong> {{ $drama->sinopsis ?? 'Sin sinopsis' }}</p>
+@section('titulo', $drama->titulo)
 
-<a href="{{ route('dramas.edit', $drama) }}">Editar</a>
-<a href="{{ route('dramas.index') }}">Volver al listado</a>
+@section('contenido')
+    <h1 class="h3">{{ $drama->titulo }}</h1>
+
+    <dl class="row">
+        <dt class="col-sm-2">Año</dt>
+        <dd class="col-sm-10">{{ $drama->anio }}</dd>
+
+        <dt class="col-sm-2">Estado</dt>
+        <dd class="col-sm-10">{{ $drama->estado }}</dd>
+
+        <dt class="col-sm-2">Calificación</dt>
+        <dd class="col-sm-10">{{ $drama->calificacion ?? 'Sin calificar' }}</dd>
+
+        <dt class="col-sm-2">Sinopsis</dt>
+        <dd class="col-sm-10">{{ $drama->sinopsis ?? 'Sin sinopsis' }}</dd>
+    </dl>
+
+    <a href="{{ route('dramas.edit', $drama) }}" class="btn btn-primary">Editar</a>
+    <a href="{{ route('dramas.index') }}" class="btn btn-outline-secondary">Volver al listado</a>
+@endsection

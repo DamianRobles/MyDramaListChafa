@@ -17,7 +17,7 @@ class DramaRequest extends FormRequest
             'titulo'       => ['required', 'string', 'max:255'],
             'sinopsis'     => ['nullable', 'string'],
             'anio'         => ['required', 'integer', 'min:1900', 'max:2100'],
-            'estado'       => ['required', 'in:Pendiente,En emisión,Finalizado'],
+            'estado'       => ['required', 'in:Pendiente,Viendo,Finalizado'],
             'calificacion' => ['nullable', 'numeric', 'between:0,10'],
         ];
     }

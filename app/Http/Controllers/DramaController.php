@@ -27,6 +27,7 @@ class DramaController extends Controller
             ->route('dramas.index')
             ->with('exito', 'Drama guardado correctamente.');
     }
+    
     public function edit(Drama $drama)
     {
         return view('dramas.edit', ['drama' => $drama]);
