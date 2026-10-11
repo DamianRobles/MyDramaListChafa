@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Drama;
 use App\Http\Requests\DramaRequest;
+use App\Models\Genero;
 use Illuminate\Http\Request;
 
 class DramaController extends Controller
@@ -13,6 +14,7 @@ class DramaController extends Controller
         $buscar = $request->query('buscar');
 
         $dramas = Drama::query()
+            ->with('genero')
             ->when($buscar, fn ($query) => $query->where('titulo', 'like', "%{$buscar}%"))
             ->orderBy('titulo')
             ->paginate(10)
@@ -23,7 +25,9 @@ class DramaController extends Controller
 
     public function create()
     {
-        return view('dramas.create');
+        return view('dramas.create', [
+            'generos' => Genero::orderBy('nombre')->get(),
+        ]);
     }
 
     public function store(DramaRequest $request)
@@ -37,7 +41,10 @@ class DramaController extends Controller
 
     public function edit(Drama $drama)
     {
-        return view('dramas.edit', ['drama' => $drama]);
+        return view('dramas.edit', [
+            'drama'   => $drama,
+            'generos' => Genero::orderBy('nombre')->get(),
+        ]);
     }
 
     public function update(DramaRequest $request, Drama $drama)

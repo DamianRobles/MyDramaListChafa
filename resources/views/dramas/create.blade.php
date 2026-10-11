@@ -51,6 +51,22 @@
         </div>
 
         <div class="mb-3">
+            <label for="genero_id" class="form-label">Género</label>
+            <select id="genero_id" name="genero_id"
+                    class="form-select @error('genero_id') is-invalid @enderror">
+                <option value="">Sin género</option>
+                @foreach ($generos as $genero)
+                    <option value="{{ $genero->id }}" @selected(old('genero_id') == $genero->id)>
+                        {{ $genero->nombre }}
+                    </option>
+                @endforeach
+            </select>
+            @error('genero_id')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="mb-3">
             <label for="calificacion" class="form-label">Calificación (0 a 10)</label>
             <input type="number" id="calificacion" name="calificacion" step="0.1"
                    class="form-control @error('calificacion') is-invalid @enderror"

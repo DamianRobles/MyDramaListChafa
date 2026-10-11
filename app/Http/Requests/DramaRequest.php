@@ -19,6 +19,7 @@ class DramaRequest extends FormRequest
             'anio'         => ['required', 'integer', 'min:1900', 'max:2100'],
             'estado'       => ['required', 'in:Pendiente,Viendo,Finalizado'],
             'calificacion' => ['nullable', 'numeric', 'between:0,10'],
+            'genero_id'    => ['nullable', 'exists:generos,id'],
         ];
     }
 
@@ -30,6 +31,7 @@ class DramaRequest extends FormRequest
             'anio.max'        => 'El año no puede ser mayor a 2100.',
             'estado.in'       => 'Elige un estado válido.',
             'calificacion.between' => 'La calificación debe estar entre 0 y 10.',
+            'genero_id.exists' => 'Elige un género válido.',
         ];
     }
 }

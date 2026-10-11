@@ -12,6 +12,9 @@
         <dt class="col-sm-2">Estado</dt>
         <dd class="col-sm-10">{{ $drama->estado }}</dd>
 
+        <dt class="col-sm-2">Género</dt>
+        <dd class="col-sm-10">{{ $drama->genero->nombre ?? 'Sin género' }}</dd>
+
         <dt class="col-sm-2">Calificación</dt>
         <dd class="col-sm-10">{{ $drama->calificacion ?? 'Sin calificar' }}</dd>
 
