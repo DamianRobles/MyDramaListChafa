@@ -8,6 +8,19 @@
         <a href="{{ route('dramas.create') }}" class="btn btn-primary">Agregar drama</a>
     </div>
 
+    <form action="{{ route('dramas.index') }}" method="GET" class="row g-2 mb-3">
+        <div class="col">
+            <input type="text" name="buscar" value="{{ $buscar }}"
+                   class="form-control" placeholder="Buscar por título...">
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-outline-primary">Buscar</button>
+            @if ($buscar)
+                <a href="{{ route('dramas.index') }}" class="btn btn-outline-secondary">Limpiar</a>
+            @endif
+        </div>
+    </form>
+
     <table class="table table-striped align-middle">
         <thead>
         <tr>
@@ -43,4 +56,5 @@
         @endforelse
         </tbody>
     </table>
+    {{ $dramas->links() }}
 @endsection

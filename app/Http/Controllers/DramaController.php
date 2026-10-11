@@ -4,14 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Drama;
 use App\Http\Requests\DramaRequest;
+use Illuminate\Http\Request;
 
 class DramaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $dramas = Drama::all();
+        $buscar = $request->query('buscar');
 
-        return view('dramas.index', ['dramas' => $dramas]);
+        $dramas = Drama::query()
+            ->when($buscar, fn ($query) => $query->where('titulo', 'like', "%{$buscar}%"))
+            ->orderBy('titulo')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('dramas.index', ['dramas' => $dramas, 'buscar' => $buscar]);
     }
 
     public function create()
@@ -27,7 +34,7 @@ class DramaController extends Controller
             ->route('dramas.index')
             ->with('exito', 'Drama guardado correctamente.');
     }
-    
+
     public function edit(Drama $drama)
     {
         return view('dramas.edit', ['drama' => $drama]);

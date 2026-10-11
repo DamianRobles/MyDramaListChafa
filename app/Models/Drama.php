@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Drama extends Model
 {
@@ -13,6 +14,11 @@ class Drama extends Model
         'anio',
         'estado',
         'calificacion',
+        'genero_id',
     ];
 
+    public function genero(): BelongsTo
+    {
+        return $this->belongsTo(Genero::class);
+    }
 }
