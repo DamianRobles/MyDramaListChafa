@@ -1,58 +1,129 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# MyDramaListChafa
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Lista personal de dramas hecha con **Laravel 13**. Permite registrar los dramas que quieres ver, estás viendo o ya terminaste, con su género, año, calificación y sinopsis.
 
-## About Laravel
+Este proyecto nació como práctica de servicio social para aprender Laravel desde cero siguiendo el temario básico de la fase 1.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Tecnologías
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- PHP 8.3
+- Laravel 13
+- MySQL 8.4
+- Blade + Bootstrap 5.3 (por CDN)
+- Laragon como entorno local
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Qué hace
 
-## Learning Laravel
+- CRUD completo de dramas: listar, ver detalle, crear, editar y eliminar.
+- Búsqueda por título y paginación de 10 en 10.
+- Cada drama pertenece a un género (relación `belongsTo` / `hasMany`).
+- Cambio rápido de estado (Pendiente, Viendo, Finalizado) con una petición `PATCH`.
+- Eliminación suave (*soft delete*): los dramas borrados siguen en la base de datos con `deleted_at`.
+- Validación con un Form Request (`DramaRequest`), incluida la regla `unique` por título y año, y la regla `exists` para el género.
+- Mensajes flash y componentes Blade reutilizables (`<x-alerta>` y `<x-estado-badge>`).
+- Middleware propio (`registrar`) que escribe en el log cada petición que entra y la respuesta que sale.
+- Respuestas JSON con códigos de estado (200 y 404) para consultar los dramas.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Rutas
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| Verbo | URL | Nombre | Qué hace |
+|-------|-----|--------|----------|
+| GET | `/` | — | Redirige a `/dramas` |
+| GET | `/dramas` | `dramas.index` | Lista con búsqueda y paginación |
+| GET | `/dramas/create` | `dramas.create` | Formulario para crear |
+| POST | `/dramas` | `dramas.store` | Guarda un drama nuevo |
+| GET | `/dramas/{drama}` | `dramas.show` | Muestra el detalle |
+| GET | `/dramas/{drama}/edit` | `dramas.edit` | Formulario para editar |
+| PUT | `/dramas/{drama}` | `dramas.update` | Actualiza el drama |
+| PATCH | `/dramas/{drama}/estado` | `dramas.estado` | Cambia solo el estado |
+| DELETE | `/dramas/{drama}` | `dramas.destroy` | Elimina (soft delete) |
+| GET | `/json/dramas` | `json.dramas.index` | Lista en JSON |
+| GET | `/json/dramas/{id}` | `json.dramas.show` | Detalle en JSON (404 si no existe) |
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+Las rutas de `/dramas` y `/json` pasan por el middleware `registrar`.
 
-## Agentic Development
+## Estructura relevante
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+```
+app/
+├── Http/
+│   ├── Controllers/
+│   │   ├── DramaController.php        # CRUD con vistas Blade
+│   │   └── DramaJsonController.php    # Respuestas JSON
+│   ├── Middleware/RegistrarAccion.php # Escribe entrada y salida en el log
+│   └── Requests/DramaRequest.php      # Reglas y mensajes de validación
+└── Models/
+    ├── Drama.php                      # SoftDeletes + belongsTo(Genero)
+    └── Genero.php                     # hasMany(Drama)
+database/migrations/                   # dramas, generos, genero_id y soft deletes
+resources/views/
+├── layouts/app.blade.php              # Layout base
+├── components/                        # alerta y estado-badge
+└── dramas/                            # index, show, create, edit
+routes/web.php                         # Rutas agrupadas con prefijo y nombre
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## Instalación
 
-## Contributing
+1. Clona el repositorio y entra a la carpeta:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+   ```bash
+   git clone https://github.com/DamianRobles/MyDramaListChafa
+   cd MyDramaListChafa
+   ```
 
-## Code of Conduct
+2. Instala las dependencias:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+   ```bash
+   composer install
+   ```
 
-## Security Vulnerabilities
+3. Copia el archivo de entorno y genera la llave de la aplicación:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
-## License
+4. Crea una base de datos vacía en MySQL llamada `mydramalistchafa` y ajusta en `.env`:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=mydramalistchafa
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
+
+5. Corre las migraciones:
+
+   ```bash
+   php artisan migrate
+   ```
+
+6. Crea algunos géneros. El proyecto todavía no trae seeder, así que usa Tinker:
+
+   ```bash
+   php artisan tinker
+   ```
+
+   ```php
+   use App\Models\Genero;
+   Genero::create(['nombre' => 'Romance']);
+   Genero::create(['nombre' => 'Comedia']);
+   Genero::create(['nombre' => 'Drama']);
+   ```
+
+7. Levanta el servidor con `php artisan serve` y abre `http://localhost:8000`. Si usas Laragon, entra directo a `http://mydramalistchafa.test`.
+
+## Cómo seguir el recorrido de una petición
+
+Abre `storage/logs/laravel.log` mientras navegas. El middleware `registrar` deja dos líneas por petición:
+
+```
+Entra: GET /dramas
+Sale: código 200
+```
+
+Las horas del log aparecen en UTC, es decir, seis horas por delante de la hora de Ciudad de México.
