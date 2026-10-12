@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DramaController;
+use App\Http\Controllers\DramaJsonController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,4 +21,9 @@ Route::middleware('registrar')->prefix('dramas')->name('dramas.')->group(functio
     Route::patch('/{drama}/estado', [DramaController::class, 'cambiarEstado'])->name('estado');
     Route::get('/{drama}', [DramaController::class, 'show'])->name('show');
     Route::delete('/{drama}', [DramaController::class, 'destroy'])->name('destroy');
+});
+
+Route::middleware('registrar')->prefix('json')->name('json.')->group(function () {
+    Route::get('/dramas', [DramaJsonController::class, 'index'])->name('dramas.index');
+    Route::get('/dramas/{id}', [DramaJsonController::class, 'show'])->name('dramas.show');
 });

@@ -58,6 +58,8 @@ class DramaController extends Controller
 
     public function show(Drama $drama)
     {
+        $drama->load('genero');
+
         return view('dramas.show', ['drama' => $drama]);
     }
 
