@@ -15,7 +15,7 @@
 
 <main class="container">
     @if (session('exito'))
-        <div class="alert alert-success">{{ session('exito') }}</div>
+        <x-alerta>{{ session('exito') }}</x-alerta>
     @endif
 
     @yield('contenido')

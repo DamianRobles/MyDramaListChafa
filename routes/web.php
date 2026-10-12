@@ -7,14 +7,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/hola', function () {
-    return view('hola', ['nombre'=>'Juan']);
+Route::get('/hola/{nombre?}', function (string $nombre = 'Juan') {
+    return view('hola', ['nombre' => $nombre]);
 });
 
-Route::get('/dramas',[DramaController::class,'index'])->name('dramas.index');
-Route::get('/dramas/create', [DramaController::class, 'create'])->name('dramas.create');
-Route::post('/dramas', [DramaController::class, 'store'])->name('dramas.store');
-Route::get('/dramas/{drama}/edit', [DramaController::class, 'edit'])->name('dramas.edit');
-Route::put('/dramas/{drama}', [DramaController::class, 'update'])->name('dramas.update');
-Route::get('/dramas/{drama}', [DramaController::class, 'show'])->name('dramas.show');
-Route::delete('/dramas/{drama}', [DramaController::class, 'destroy'])->name('dramas.destroy');
+Route::middleware('registrar')->prefix('dramas')->name('dramas.')->group(function () {
+    Route::get('/', [DramaController::class, 'index'])->name('index');
+    Route::get('/create', [DramaController::class, 'create'])->name('create');
+    Route::post('/', [DramaController::class, 'store'])->name('store');
+    Route::get('/{drama}/edit', [DramaController::class, 'edit'])->name('edit');
+    Route::put('/{drama}', [DramaController::class, 'update'])->name('update');
+    Route::patch('/{drama}/estado', [DramaController::class, 'cambiarEstado'])->name('estado');
+    Route::get('/{drama}', [DramaController::class, 'show'])->name('show');
+    Route::delete('/{drama}', [DramaController::class, 'destroy'])->name('destroy');
+});

@@ -69,4 +69,15 @@ class DramaController extends Controller
             ->route('dramas.index')
             ->with('exito', 'Drama eliminado correctamente.');
     }
+
+    public function cambiarEstado(Request $request, Drama $drama)
+    {
+        $datos = $request->validate([
+            'estado' => ['required', 'in:Pendiente,Viendo,Finalizado'],
+        ]);
+
+        $drama->update($datos);
+
+        return back()->with('exito', 'Estado actualizado.');
+    }
 }

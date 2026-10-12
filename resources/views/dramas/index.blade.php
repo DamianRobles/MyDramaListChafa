@@ -37,7 +37,7 @@
             <tr>
                 <td><a href="{{ route('dramas.show', $drama) }}">{{ $drama->titulo }}</a></td>
                 <td>{{ $drama->anio }}</td>
-                <td>{{ $drama->estado }}</td>
+                <td><x-estado-badge :estado="$drama->estado" /></td>
                 <td>{{ $drama->genero->nombre ?? '—' }}</td>
                 <td>{{ $drama->calificacion ?? '—' }}</td>
                 <td class="text-end">
