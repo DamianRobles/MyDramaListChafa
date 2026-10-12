@@ -4,9 +4,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DramaController;
 use App\Http\Controllers\DramaJsonController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+
+Route::redirect('/', '/dramas');
 
 Route::get('/hola/{nombre?}', function (string $nombre = 'Juan') {
     return view('hola', ['nombre' => $nombre]);
